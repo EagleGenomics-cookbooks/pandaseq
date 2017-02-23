@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/EagleGenomics-cookbooks/pandaseq.svg?branch=master)](https://travis-ci.org/EagleGenomics-cookbooks/pandaseq)
+
 # pandaseq
 Cookbook to install the pandaseq tool.
 
