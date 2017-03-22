@@ -9,6 +9,8 @@ version '0.1.0'
 source_url 'https://github.com/EagleGenomics-cookbooks/pandaseq'
 issues_url 'https://github.com/EagleGenomics-cookbooks/pandaseq/issues'
 
+depends 'locale-gen'
+
 depends 'apt'
 depends 'build-essential'
 

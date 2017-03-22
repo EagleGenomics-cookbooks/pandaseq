@@ -17,6 +17,11 @@
 
 include_recipe 'apt' if platform_family?('debian')
 
+package 'language-pack-en'
+package 'language-pack-en-base'
+
+include_recipe 'locale-gen'
+
 include_recipe 'build-essential'
 
 apt_repository 'pandaseq' do
