@@ -1,6 +1,5 @@
 sudo: required
 dist: trusty
-
 addons:
   apt:
     sources:
@@ -8,32 +7,31 @@ addons:
     packages:
     - chefdk
 install: echo "skip bundle install"
-
 branches:
   only:
   - master
-
 services: docker
-
 env:
   global:
-    - RUBYOPT="-W0"
+  - RUBYOPT="-W0"
+  - secure: fzLyNoTCPzrNn1vXYNl6RoOYeDgXFBDV1Etq8RX9JwimfLCctE4zeNJSe7lditX/aSf9LTSQwB82ZV9JbOAraRDPVBP6Avlh14cfszuqADWpMa27Wzrn7gubyHNSYRD30bF35EcApn5TOnCqeLJsX2I2hXeeKvuuNTXyrlRUOyvWWVMm/oiQw2C2hr5hQvuBib2zJMCi58GI+YhdesfmTFoFP+ghL3c/2W52VvDdYdhLjXIIsfV1rXk639IUZ8KeJkRRwyEML4+l7O6TmU8M4rH/g61ow6/tORjRsfGVZmTKLRZy1bVp6+GnW+5ndklx/XMl+SwcDPyhYbNEjQwpagG1RlX5lJdyA7qTMjymIMbdPO9T7/Iy747N9bSYQRIs2j/AZN3g+7Frpzb+saSqliGsXZBvxSgepLfcXB0WJhPffPzuQUlHTaMc4TO61ldAOh+xkT+MuO/LFFaM0HEuMlq6t5YAh8yL28DhiOOQrjWK29hqmlPe4rGDROj64nSN7f0bsbSfuj1cSm38XL7dFCa7B45SiHgDBHziIWlLnWhpnrnQgHj76i59gN3O0y1+kHwJ1YkMoDIk4YBv1bAZftBUwdVGD++fw+OmNAp0W8eY4Gk1mRVwg3okUr55scpWMli13sjO0iR5Wpgusg8fL1Q6FlNvW6rnUMBD3ybvPv4=
   matrix:
-    - CHEF_VERSION=current INSTANCE=default-ubuntu-1404
-
+  - CHEF_VERSION=current INSTANCE=default-ubuntu-1404
 before_script:
-  - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables
-    -N DOCKER )
-  - eval "$(/opt/chefdk/bin/chef shell-init bash)"
-  - chef gem install kitchen-docker
-  - "/opt/chefdk/bin/chef exec rake tests"
-
+- sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables
+  -N DOCKER )
+- eval "$(/opt/chefdk/bin/chef shell-init bash)"
+- chef gem install kitchen-docker
+- "/opt/chefdk/bin/chef exec rake tests"
 script:
-  - KITCHEN_LOCAL_YAML=.kitchen.docker.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
-
+- KITCHEN_LOCAL_YAML=.kitchen.docker.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
 notifications:
   slack:
     secure: FudhlsDwP/+EsLY7CkX7P3317rJaE4SoUxVElr35KkPHhyYe/oT4yMJXYWzse6pwE8xN02O60yTxeCEltSoYabrfxocsP/A2a1P96Jx60n/Axm3TWJ9J1Wh8+y0P1dSo1yxj0DqbvWOeAYoGMtrt+YvxWMbsq3kEsgw5hzCX0dEokAz6DNKbPirfynEupbnARWpnaFWpU7293QGV4M8PZiltidH33dJrS26hAUtehlKwoDZlU8bxYKAABg2PAGNGcHATUnaaJQ8p24bbZwQzB7Y0OoSeU4fD4Oc1KtVfEbC7LkT7IubZ85vz+ZAVay4R7mh6QzqjOkZiI/iEFc3++JP9FsY9Xk2bgX3zIFFYGP+s5HfZx2c4ko6CytrmHKFajqoHMepiKwtcqz5Plr6DBSPEPpjjlOlLK42S8QZA/pUwrAP7FevC7PCBuplX80DPueNccf+diNAj6Yw/0veyXm8XYx2VwwjPRCTzshBvR/XYDU2s5p/RcWUTuxeYYnzTXqdAGoYI/vNmbcvHScNLdBy/K8fxNwlYntvr4DXf10qD1X4EOWe62rwle+AlzL9y2HF/3A55IlA4k6tu+J1pgNzeAdAvb86tnvmV6aPpKqgOXopOP/Cgy/aby21baJdTbYMYi9Qcsza/8/ziReXhvZpmIMrLiG8HVLnhwGUeNMc=
   email:
     on_success: change
     on_failure: always
+after_success:
+- chmod +x trigger_dependent_build.sh
+- "./trigger_dependent_build.sh EagleGenomics-cookbooks pandaseq_runnable private
+  $TRAVIS_ACCESS_TOKEN"
