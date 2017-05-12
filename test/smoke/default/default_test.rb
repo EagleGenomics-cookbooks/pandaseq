@@ -13,5 +13,5 @@ end
 # Command works but exit status is 1, and STDERR not STDOUT - oh my!
 describe command('pandaseq -v') do
   its('exit_status') { should eq 1 }
-  its('stderr') { should match('pandaseq 2.10 ') }
+  its('stderr') { should match('pandaseq 2.11 ') }
 end

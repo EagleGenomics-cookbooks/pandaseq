@@ -4,7 +4,7 @@ maintainer_email 'chef@eaglegenomics.com'
 license 'apache2'
 description 'Installs/Configures pandaseq'
 long_description 'Installs/Configures pandaseq'
-version '0.1.0'
+version '0.1.1'
 
 source_url 'https://github.com/EagleGenomics-cookbooks/pandaseq'
 issues_url 'https://github.com/EagleGenomics-cookbooks/pandaseq/issues'
